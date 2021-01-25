@@ -1,6 +1,7 @@
 const express = require("express");
 const axios = require("axios");
 const app = express();
+const PORT = 5000
 
 app.get("/api/rates", (req, res) => {
   const { base, currency } = req.query;
@@ -19,18 +20,16 @@ app.get("/api/rates", (req, res) => {
       const { base, date, rates } = response.data;
       const currentDate = new Date().toJSON().slice(0, 10);
       return res.status(200).json({
-        results: { base, date: date, rates},
+        results: { base, date: date, rates },
       });
     })
     .catch((err) => {
-      return res.status(500).json({ error: err.response });
+      return res.status(err.status).json({ error: err.messsage });
     });
 });
 
 app.use((req, res) => {
-  return res.status(404).json({ error: "invalid endpoint request" });
+  return res.status(404).json({ error: "Invalid endpoint request" });
 });
 
-
-
-app.listen(8000);
+app.listen(PORT);
