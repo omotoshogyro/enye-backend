@@ -6,15 +6,17 @@ var PORT = process.env.PORT || 5000;
 app.get("/api/rates", (req, res) => {
   const { base, currency } = req.query;
 
-  if (!base) {
+  if (!base || !currency) {
     return res
       .status(422)
-      .json({ error: "Base exchange currency type is not Specified" });
+      .json({
+        error:
+          "Base exchange currency and converted currency type must not Specified",
+      });
   }
-
   axios
     .get(
-      `https://api.exchangeratesapi.io/latest?base=${base}&symbols=${currency}`
+      `https://api.exchangeratesapi.io/latest?base=${base.toUpperCase()}&symbols=${currency?.toUpperCase()}`
     )
     .then((response) => {
       const { base, date, rates } = response.data;
@@ -24,7 +26,7 @@ app.get("/api/rates", (req, res) => {
       });
     })
     .catch((err) => {
-      return res.status(err.status).json({ error: err.messsage });
+      return res.status(422).json({ error: err.messsage });
     });
 });
 
