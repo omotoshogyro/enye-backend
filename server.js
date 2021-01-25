@@ -7,12 +7,10 @@ app.get("/api/rates", (req, res) => {
   const { base, currency } = req.query;
 
   if (!base || !currency) {
-    return res
-      .status(422)
-      .json({
-        error:
-          "Base exchange currency and converted currency type must not Specified",
-      });
+    return res.status(422).json({
+      error:
+        "Base exchange currency and converted currency type must be Specified",
+    });
   }
   axios
     .get(
