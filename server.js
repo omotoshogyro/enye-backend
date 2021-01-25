@@ -1,7 +1,7 @@
 const express = require("express");
 const axios = require("axios");
 const app = express();
-const PORT = 5000
+var PORT = process.env.PORT || 5000;
 
 app.get("/api/rates", (req, res) => {
   const { base, currency } = req.query;
